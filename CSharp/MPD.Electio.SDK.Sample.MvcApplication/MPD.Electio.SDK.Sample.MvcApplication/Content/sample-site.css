@@ -1,0 +1,30 @@
+﻿.row {
+    margin: 5px;
+}
+
+.btn--float-left {
+    float: left;
+}
+
+pre {
+    padding: 0;
+    background-color: transparent;
+    border: 0 none;
+    margin: 0;
+    font-size: 1em;
+}
+
+.field-validation-error {
+    background: #b22222;
+    border-radius: 5px;
+    padding: 3px;
+    color: #fff;
+}
+
+.input-validation-error {
+    border: 1px solid #b22222;
+}
+
+.margin--10 {
+    margin: 10px;
+}

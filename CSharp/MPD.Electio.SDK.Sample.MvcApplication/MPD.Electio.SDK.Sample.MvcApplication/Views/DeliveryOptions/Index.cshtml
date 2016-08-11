@@ -1,0 +1,132 @@
+﻿@model MPD.Electio.SDK.Sample.MvcApplication.Models.DeliveryOptions.DeliveryOptionsViewModel
+
+    @{
+        ViewBag.Title = "Delivery Options";
+        Layout = "~/Views/Shared/Layout.cshtml";
+    }
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>Get Delivery Options</h1>
+            <p>
+                This page demonstrates how to use the Delivery Options API to present options to your users.
+                This page mocks a basket process and shows how to use retrieve, display and select an option.
+            </p>
+        </div>
+        @{
+            if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+            {
+                <div class="alert alert-danger">
+                    <span class="glyphicon glyphicon-remove-sign"></span>
+                    @ViewBag.Message
+                </div>
+            }
+        }
+        <div class="col-lg-12">
+            <div class="col-lg-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        Your basket
+                    </div>
+                    <div class="panel-body table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <td>
+                                        Item
+                                    </td>
+                                    <td>
+                                        QTY
+                                    </td>
+                                    <td>
+                                        Unit Price (£)
+                                    </td>
+                                    <td>
+                                        Total (£)
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>100% Pure Cotton Socks</td>
+                                    <td>1</td>
+                                    <td>2.99</td>
+                                    <td>2.99</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        Choose delivery options
+                    </div>
+                    <div class="panel-body">
+                        <div class="alert alert-info">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            <span>Using your registered address 123 Test Street, Testington, Testville, Testishire, M1 5WG</span>
+                        </div>
+                        
+                        @if (Model.Response != null)
+                        {
+                            if (!Model.Response.DeliveryOptions.Any())
+                            {
+                                <div class="alert alert-warning">
+                                    <span class="glyphicon glyphicon-warning-sign"></span>
+                                    No delivery options found, please try again
+                                </div>
+                            }
+                            else
+                            {
+                                foreach (var option in Model.Response.DeliveryOptions)
+                                {
+                                    <div class="panel panel-default">
+                                        <div class="panel-body table-responsive">
+                                            <table class="table table-striped table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <td>
+                                                        Reference
+                                                    </td>
+                                                    <td>
+                                                        Carrier Service
+                                                    </td>
+                                                    <td>
+                                                        Price
+                                                    </td>
+                                                    <td>
+                                                        Notes
+                                                    </td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>@option.Reference</td>
+                                                    <td>@option.CarrierService (@option.CarrierServiceReference)</td>
+                                                    <td>@option.Price.Net (@option.Price.Currency.IsoCode) (net)</td>
+                                                    <td>
+                                                        Allocation cut off: @option.AllocationCutOff.ToString("dd/MM/yyyy HH:mm")
+                                                        <br/>
+                                                        Estimated delivery date: @(option.EstimatedDeliveryDate.Date.ToString("dd/MM/yyyy"))
+                                                        <br/>
+                                                        Delivery window: @option.DeliveryWindow.Start - @option.DeliveryWindow.End
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <form action="/deliveryoptions/@option.Reference/select" method="post">
+                                                <input type="submit" value="Select this option" class="btn btn-default"/>    
+                                            </form>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

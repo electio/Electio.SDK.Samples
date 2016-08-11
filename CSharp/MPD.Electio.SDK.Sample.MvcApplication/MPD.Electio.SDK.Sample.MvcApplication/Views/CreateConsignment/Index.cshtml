@@ -1,0 +1,170 @@
+﻿@using MPD.Electio.SDK.Sample.MvcApplication.Extensions
+@model MPD.Electio.SDK.Sample.MvcApplication.Models.Consignments.CreateConsignmentViewModel
+
+@{
+    ViewBag.Title = "Create Consignment";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1>Create Consignment</h1>
+        @{
+            if (Model.Created == true)
+            {
+                <div class="alert alert-success">
+                    <span class="glyphicon glyphicon-ok-sign"></span>
+                    Your consignment has been created successfully! The returned link is @Model.CreatedConsignmentLink
+                    @{
+                        var consignmentRef = Model.CreatedConsignmentLink.TryExtractConsignmentReference();
+                        if (!string.IsNullOrWhiteSpace(consignmentRef))
+                        {
+                            <a href="/consignment/@consignmentRef">View consignment @consignmentRef</a>
+                        }
+                    }
+                </div>
+            }
+            else
+            {
+                <p>
+                    This is a sample for creating a new consignment and covers the basic principles for creating a new consignment.
+                </p>
+                using (Html.BeginForm("CreateConsignment", "CreateConsignment", FormMethod.Post, new { @class = "form-inline" }))
+                {
+                    <div class="row">
+                        <div class="alert alert-info">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            All consignments created in Electio will be assigned a unique reference in the format EC-XXX-XXX-XXX.
+                            However, you are also able to supply your own custom reference to a consignment - these don't need to be unique.
+                        </div>
+                        <h4>Reference</h4>
+                        <div class="form-group">
+                            <label for="customerReference">Your Reference</label>
+                            @Html.TextBoxFor(x => x.CreateConsignmentRequest.ReferenceProvidedByCustomer, new { id = "customerReference", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4>Package Details</h4>
+                        <div class="alert alert-info">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            All consignments must contain at least 1 package. This forms allows you to add the details of a single package.
+                        </div>
+                        <div class="form-group">
+                            <label for="packageDescription">Package Description</label>
+                            @Html.TextBoxFor(x => x.CreateConsignmentRequest.PackageDescription, new { id = "packageDescription", @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.PackageDescription)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="packageLength">Length (cm)</label>
+                            @Html.TextBoxFor(x => x.CreateConsignmentRequest.PackageLength, new { id = "packageLength", @class = "form-control", @type = "number", step = "0.01" })
+                            @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.PackageLength)
+                            <label for="packageHeight">Height (cm)</label>
+                            @Html.TextBoxFor(x => x.CreateConsignmentRequest.PackageHeight, new { id = "packageHeight", @class = "form-control", @type = "number", step = "0.01" })
+                            @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.PackageHeight)
+                            <label for="packageWidth">Width (cm)</label>
+                            @Html.TextBoxFor(x => x.CreateConsignmentRequest.PackageWidth, new { id = "packageWidth", @class = "form-control", @type = "number", step = "0.01" })
+                            @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.PackageWidth)
+                            <label for="packageWidth">Weight (kg)</label>
+                            @Html.TextBoxFor(x => x.CreateConsignmentRequest.PackageWeight, new { id = "packageWeight", @class = "form-control", @type = "number", step = "0.01" })
+                            @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.PackageWeight)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="packageValueAmount">Value</label>
+                            @Html.TextBoxFor(x => x.CreateConsignmentRequest.PackageValue, new { id = "packageValueAmount", @class = "form-control", @type = "number", step = "0.01" })
+                            @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.PackageValue)
+                            <label for="packageValueAmount">Currency</label>
+                            @Html.DropDownListFor(x => x.CreateConsignmentRequest.Currency, (IEnumerable<SelectListItem>)Model.Currencies, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.Currency)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4>Origin Address</h4>
+                        <div class="alert alert-info">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            All consignments should have a shipping location at one end of the journey, either origin or destination.
+                            Choose from one of your shipping locations here to set your origin address automatically.
+                        </div>
+                        <div class="form-group">
+                            <label for="originShippingLocation">Shipping location:</label>
+                            @Html.DropDownListFor(x => x.CreateConsignmentRequest.OriginShippingLocationReference, Model.ShippingLocations, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.OriginShippingLocationReference)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4>Destination Address</h4>
+                        <div class="alert alert-info">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            An address should consist of both an address and the contact/named person at that location.
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="destinTitle">Title</label>
+                                @Html.DropDownListFor(x => x.CreateConsignmentRequest.DestinationContactTitle, Model.Titles, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.DestinationContactTitle)
+                            </div>
+                            <div class="form-group">
+                                <label for="destinForename">Forename</label>
+                                @Html.TextBoxFor(x => x.CreateConsignmentRequest.DestinationContactForename, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.DestinationContactForename)
+                            </div>
+                            <div class="form-group">
+                                <label for="destinSurname">Surname</label>
+                                @Html.TextBoxFor(x => x.CreateConsignmentRequest.DestinationContactSurname, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.DestinationContactSurname)
+                            </div>
+                            <div class="form-group">
+                                <label for="destinEmail">Email</label>
+                                @Html.TextBoxFor(x => x.CreateConsignmentRequest.DestinationContactEmail, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.DestinationContactEmail)
+                            </div>
+                            <div class="form-group">
+                                <label for="destinPhone">Telephone</label>
+                                @Html.TextBoxFor(x => x.CreateConsignmentRequest.DestinationContactTelephone, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.DestinationContactTelephone)
+                            </div>
+                            <div class="form-group">
+                                <label for="destinAddressLine1">Address Line 1</label>
+                                @Html.TextBoxFor(x => x.CreateConsignmentRequest.DestinationAddressLine1, new { @class = "form-control", @id = "destinAddressLine1" })
+                                @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.DestinationAddressLine1)
+                            </div>
+                            <div class="form-group">
+                                <label for="destinAddressLine2">Address Line 2</label>
+                                @Html.TextBoxFor(x => x.CreateConsignmentRequest.DestinationAddressLine2, new { @class = "form-control", @id = "destinAddressLine2" })
+                            </div>
+                            <div class="form-group">
+                                <label for="destinAddressLine3>Address Line 3</label>
+                                @Html.TextBoxFor(x => x.CreateConsignmentRequest.DestinationAddressLine3, new { @class = "form-control", @id = "destinAddressLine3" })
+                            </div>
+                            <div class="form-group">
+                                <label for="destinAddressTown">Town</label>
+                                @Html.TextBoxFor(x => x.CreateConsignmentRequest.DestinationAddressTown, new { @class = "form-control", @id = "destinAddressTown" })
+                                @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.DestinationAddressTown)
+                            </div>
+                            <div class="form-group">
+                                <label for="destinAddressRegion">Region / County</label>
+                                @Html.TextBoxFor(x => x.CreateConsignmentRequest.DestinationAddressRegion, new { @class = "form-control", @id = "destinAddressRegion" })
+                                @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.DestinationAddressRegion)
+                            </div>
+                            <div class="form-group">
+                                <label for="destinAddressPostcode">Postcode</label>
+                                @Html.TextBoxFor(x => x.CreateConsignmentRequest.DestinationAddressPostcode, new { @class = "form-control", @id = "destinAddressPostcode" })
+                                @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.DestinationAddressPostcode)
+                            </div>
+                            <div class="form-group">
+                                <label for="destinAddressCountry">Country</label>
+                                @Html.DropDownListFor(x => x.CreateConsignmentRequest.DestinationAddressCountryIsoCode, Model.Countries, new { @class = "form-control", id = "destinAddressCountry" })
+                                @Html.ValidationMessageFor(x => x.CreateConsignmentRequest.DestinationAddressCountryIsoCode)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="submit" value="Save Consignment" class="btn btn-success" />
+                    </div>
+                }
+            }}
+    </div>
+</div>

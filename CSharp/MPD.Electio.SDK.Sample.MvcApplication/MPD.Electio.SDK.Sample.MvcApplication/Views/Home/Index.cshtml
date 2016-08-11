@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+@section styles {
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/default.min.css">
+}
+
+<div class="col-lg-12">
+    <div class="jumbotron">
+        <h1>Electio Sample</h1>
+        <p>This is a simple .NET / C# / MVC Application designed to demonstrate how to get started with the Electio SDK and API.</p>
+        <p>Use the navigation bar above to view the various sample pages.</p>
+    </div>
+</div>
+<div class="col-lg-8">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Getting Started</h2>
+        </div>
+        <div class="panel-body">
+            <p>To get started with this sample project there are a few steps to complete</p>
+            <h3>Add your API Key to the web.config</h3>
+            <p>This sample uses dependency injection to 'inject' your API key into the Electio SDK services. You need to add you API key to the appSettings element in web.config:</p>
+            <pre>
+            <code>
+&lt;!--in web.config--&gt;
+&lt;appSettings&gt;
+  &lt;add key="ElectioApiKey" value="your-api-key"&gt;&lt;/add&gt;
+&lt;/appSettings&gt;
+        </code>
+    </pre>
+            <h3>Build and run the solution</h3>
+            <p>Once you've opened the solution build it (Build > Build MPD.Electio.SDK.Sample.MvcApplication or ctrl + shift + B)</p>
+            <img src="~/Content/images/gettingstart-vs-build.png" alt="Build solution" class="img-responsive" />
+            <p>&nbsp;</p>
+            <p>Once the build is successful you can either set it up in your local IIS or simply start debugging:</p>
+            <img src="~/Content/images/gettingstart-vs-debug.png" alt="Start debugging" class="img-responsive"/>        
+        </div>
+    </div>
+</div>
+<div class="col-lg-4">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h2>Technology used:</h2>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>
+                    <a target="_blank" href="https://www.nuget.org/packages/MPD.Electio.SDK/">
+                        MPD.Electio.SDK
+                        <span class="glyphicon glyphicon-new-window"></span>
+                    </a>
+                </li>
+                <li>
+                    <a target="_blank" href="https://www.nuget.org/packages/MPD.Electio.SDK.DataTypes/">
+                        MPD.Electio.SDK.DataTypes
+                        <span class="glyphicon glyphicon-new-window"></span>
+                    </a>
+                </li>
+                <li>
+                    <a target="_blank" href="https://www.nuget.org/packages/Microsoft.AspNet.Mvc/">
+                        Microsoft ASP.NET MVC
+                        <span class="glyphicon glyphicon-new-window"></span>
+                    </a>
+                </li>
+                <li>
+                    <a target="_blank" href="https://www.nuget.org/packages/Newtonsoft.Json/">
+                        Json.NET
+                        <span class="glyphicon glyphicon-new-window"></span>
+                    </a>
+                </li>
+                <li>
+                    <a target="_blank" href="https://www.nuget.org/packages/Castle.Windsor/">
+                        Castle.Windsor
+                        <span class="glyphicon glyphicon-new-window"></span>
+                    </a>
+                </li>
+                <li>
+                    <a target="_blank" href="https://www.nuget.org/packages/bootstrap/">
+                        Bootstrap
+                        <span class="glyphicon glyphicon-new-window"></span>
+                    </a>
+                </li>
+            </ul>        
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+}

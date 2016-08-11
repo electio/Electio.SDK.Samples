@@ -1,0 +1,131 @@
+﻿@using MPD.Electio.SDK.DataTypes.Consignments.Enums
+@model MPD.Electio.SDK.DataTypes.Consignments.Consignment
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1>Consignment @Model.Reference</h1>
+        <h2>Consignment status: @Model.ConsignmentState.ToString()</h2>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Actions
+                </div>
+                <div class="panel-body">
+                    @switch (@Model.ConsignmentState)
+                    {
+                        case ConsignmentState.Unallocated:
+                            <a href="/consignments/@Model.Reference/quotes" class="btn btn-default btn--float-left">Get Quotes</a>
+                            <form action="/consignments/allocate/@Model.Reference" method="post">
+                                <input type="submit" value="Allocate (default rules)" class="btn btn-default btn--float-left"/>
+                            </form>
+                            break;
+                        case ConsignmentState.Allocated:
+                            <form action="/consignments/manifest/@Model.Reference" method="post">
+                                <input type="submit" class="btn btn-default btn--float-left" value="Manifest"/>
+                            </form>
+                            <a class="btn btn-default btn--float-left" href="/labels/@Model.Reference" target="_blank">Get Labels</a>
+                            break;
+                        case ConsignmentState.Manifested:
+                            <a class="btn btn-default btn--float-left" href="/labels/@Model.Reference" target="_blank">Get Labels</a>
+                            break;
+                        default:
+                            <span>No actions available</span>
+                            break;
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Consignment Details
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>
+                            Your reference:
+                        </label>
+                        <input type="text" disabled="disabled" value="@Model.ConsignmentReferenceProvidedByCustomer" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Electio reference:
+                        </label>
+                        <input type="text" disabled="disabled" value="@Model.Reference" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Source:
+                        </label>
+                        <input type="text" disabled="disabled" value="@Model.Source" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Date Created:
+                        </label>
+                        <input type="text" disabled="disabled" value="@Model.DateCreated.ToString("dd/MM/yyyy")" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Required delivery date:
+                        </label>
+                        <input type="text" disabled="disabled" value="@(Model.RequestedDeliveryDate?.Date.ToString("dd/MM/yyyy"))" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Shipping date:
+                        </label>
+                        <input type="text" disabled="disabled" value="@(Model.ShippingDate?.Date.ToString("dd/MM/yyyy"))" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Addresses
+                </div>
+                <div class="panel-body">
+                    @foreach (var address in Model.Addresses)
+                    {
+                        <h4>@address.AddressType.ToString() address</h4>
+                        <div class="form">
+                            <div class="form-group">
+                                <label>Address Line 1</label>
+                                <input type="text" disabled="disabled" value="@address.AddressLine1" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Address Line 2</label>
+                                <input type="text" disabled="disabled" value="@address.AddressLine2" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Address Line 3</label>
+                                <input type="text" disabled="disabled" value="@address.AddressLine3" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Town</label>
+                                <input type="text" disabled="disabled" value="@address.Town" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label>County/region</label>
+                                <input type="text" disabled="disabled" value="@address.Region" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Postcode</label>
+                                <input type="text" disabled="disabled" value="@address.Postcode" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Name</label>
+                                <input type="text" disabled="disabled" value="@address.ContactName" class="form-control"/>
+                            </div>
+                        </div>
+                        <hr/>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

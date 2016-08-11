@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        @if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+        {
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                @ViewBag.Message
+            </div>
+        }
+    </div>
+</div>

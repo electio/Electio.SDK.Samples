@@ -1,0 +1,29 @@
+﻿@using MPD.Electio.SDK.Sample.MvcApplication.Extensions
+@model MPD.Electio.SDK.DataTypes.Common.ApiLink
+
+@{
+    ViewBag.Title = "Selected";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="jumbotron">
+            <h3>Thanks for your purchase</h3>
+            <p>We hope you enjoy your new socks.</p>
+            <div>
+                Selected consignment link: @Model.Href
+                @{
+                    if (!string.IsNullOrWhiteSpace(Model.Href))
+                    {
+                        var consignmentReference = Model.Href.TryExtractConsignmentReference();
+                        if (!string.IsNullOrWhiteSpace(consignmentReference))
+                        {
+                            <a href="/consignment/@consignmentReference">View consignment @consignmentReference</a>
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
