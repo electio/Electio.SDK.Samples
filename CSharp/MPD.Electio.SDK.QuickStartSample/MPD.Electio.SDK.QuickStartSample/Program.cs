@@ -34,9 +34,12 @@ namespace MPD.Electio.SDK.QuickStartSample
                     AllocateConsignment();
                     break;
                 case 4:
-                    GetLabel();
+                    DeallocateConsignment();
                     break;
                 case 5:
+                    GetLabel();
+                    break;
+                case 6:
                     ManifestConsignment();
                     break;
                 default:
@@ -54,7 +57,7 @@ namespace MPD.Electio.SDK.QuickStartSample
                 var selected = Console.ReadLine();
                 int result;
                 if (!int.TryParse(selected, out result)) continue;
-                if (result > 0 && result <= 5)
+                if (result > 0 && result <= 6)
                 {
                     selectedResult = result;
                 }
@@ -69,8 +72,9 @@ namespace MPD.Electio.SDK.QuickStartSample
             Console.WriteLine("\t1. Create a new sample consignment");
             Console.WriteLine("\t2. Retrieve a consignment");
             Console.WriteLine("\t3. Allocate a consignment");
-            Console.WriteLine("\t4. Get labels for a consignment");
-            Console.WriteLine("\t5. Manifest a consignment");
+            Console.WriteLine("\t4: De-allocate a consignment");
+            Console.WriteLine("\t5. Get labels for a consignment");
+            Console.WriteLine("\t6. Manifest a consignment");
 
             Console.WriteLine();
         }
@@ -98,6 +102,14 @@ namespace MPD.Electio.SDK.QuickStartSample
             var consignmentReference = GetConsignmentReference();
             var proxy = new AllocationProxy();
             proxy.AllocateConsignment(consignmentReference);
+            RestartProcess();
+        }
+
+        private static void DeallocateConsignment()
+        {
+            var consignmentReference = GetConsignmentReference();
+            var proxy = new AllocationProxy();
+            proxy.DeallocateConsignment(consignmentReference);
             RestartProcess();
         }
 

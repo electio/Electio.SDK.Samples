@@ -40,5 +40,27 @@ namespace MPD.Electio.SDK.QuickStartSample
                 Console.WriteLine(ex.Message);
             }
         }
+
+        internal void DeallocateConsignment(string consignmentReference)
+        {
+            var consignmentService = new ConsignmentService(_apiKey, _endpoints, _logger);
+
+            try
+            {
+                consignmentService.DeallocateConsignment(consignmentReference);
+                Console.WriteLine("Consignment de-allocated successfully.");
+            }
+            catch (ApiException apiEx)
+            {
+                Console.WriteLine("An error occurred de-allocating the consignment.");
+                Console.WriteLine(apiEx.Message);
+                Console.WriteLine(apiEx.Error?.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An unexpected error occurred de-allocating the consignment.");
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }
