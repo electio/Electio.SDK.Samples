@@ -61,7 +61,7 @@ namespace MPD.Electio.SDK.QuickStartSample
             var consignment = consignmentService.GetConsignment(consignmentReference);
 
             Console.WriteLine($"Reference: {consignment.Reference}");
-            Console.WriteLine($"Created: {consignment.DateCreated.ToString("dd/MM/yyyy HH:mm")}");
+            Console.WriteLine($"Created: {consignment.DateCreated:dd/MM/yyyy HH:mm}");
             foreach (var address in consignment.Addresses)
             {
                 Console.WriteLine($"Address type: {address.AddressType}");
@@ -73,6 +73,8 @@ namespace MPD.Electio.SDK.QuickStartSample
                 Console.WriteLine($"Package reference: {package.Reference}");
                 Console.WriteLine($"Package weight: {package.Weight.Kg} (kg)");
             }
+
+            Console.WriteLine($"Consignment current state: {consignment.ConsignmentState}");
         }
 
         private static CreateConsignmentRequest SampleCreateConsignmentRequest()
